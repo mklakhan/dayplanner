@@ -28,11 +28,83 @@
       <p class="lead">A simple calendar app for scheduling your work day</p>
       <p id="currentDay" class="lead"></p>
     </header>
-    <div class="container">
+    <div id="eventContainer" class="container">
       <!-- Timeblocks go here -->
+    <!-- <div> -->
+      <!-- <div class="inline hour">9am</div> -->
+      <!-- <div class="inline row"> -->
+        <!-- <textarea>Enter Event Description Here</textarea> -->
+      <!-- </div> -->
+      <!-- <div class="inline"><button class="saveBtn">Save</button></div> -->
+    <!-- </div> -->
+    <!-- <div> -->
+      <!-- <div class="inline hour">9am</div> -->
+      <!-- <div class="inline row"> -->
+        <!-- <textarea>Enter Event Description Here</textarea> -->
+      <!-- </div> -->
+      <!-- <div class="inline"><button class="saveBtn">Save</button></div> -->
+    <!-- </div> -->
+    <!-- <div> -->
+      <!-- <div class="inline hour">9am</div> -->
+      <!-- <div class="inline row"> -->
+        <!-- <textarea name="w3review" rows="4" cols="50">Enter Event Description Here</textarea><button class="saveBtn inline">Save</button> -->
+      <!-- </div> -->
+      <!-- <div class="inline"></div> -->
+    <!-- </div> -->
+
+
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+
+    <script>
+    let presentTime = moment().format('LLLL');
+    console.log(moment().format('LLLL'))
+
+    const createEvents = () => { 
+    
+    const currentDay = document.getElementById('currentDay')
+    currentDay.innerHTML = presentTime; 
+    let divEnclosure = document.createElement('div');
+
+    let divTime = document.createElement('div');
+    divTime.setAttribute('class', 'inline hour');
+    divTime.innerHTML = '9AM';
+
+    let divText = document.createElement('div');
+    divText.setAttribute('class', 'inline row');
+    divText.innerHTML = 'Enter Event Description Here';
+
+    let myTextArea = document.createElement('textarea');
+    myTextArea.setAttribute('attrName', 'value');
+    myTextArea.innerHTML = 'Enter Event Description Here';
+
+    let saveBtn = document.createElement('button');
+    saveBtn.setAttribute('class', 'saveBtn inline');
+    saveBtn.innerHTML = 'Save';
+
+    divText.appendChild(saveBtn);
+    divText.appendChild(myTextArea);
+
+    currentDay.appendChild(divText);
+    currentDay.appendChild(divTime);
+
+    const eventContainer = document.getElementById('eventContainer');
+    eventContainer.appendChild(currentDay);
+
+    }
+
+    createEvents();
+
+    const timeArray = ['9AM', '10AM'];
+
+
+
+
+    </script>
+
+
   </body>
 </html>
