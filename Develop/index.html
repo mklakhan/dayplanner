@@ -28,78 +28,155 @@
       <p class="lead">A simple calendar app for scheduling your work day</p>
       <p id="currentDay" class="lead"></p>
     </header>
-    <div id="eventContainer" class="container">
+   <div id="eventContainer" class="container">
       <!-- Timeblocks go here -->
-    <!-- <div> -->
-      <!-- <div class="inline hour">9am</div> -->
-      <!-- <div class="inline row"> -->
-        <!-- <textarea>Enter Event Description Here</textarea> -->
-      <!-- </div> -->
-      <!-- <div class="inline"><button class="saveBtn">Save</button></div> -->
-    <!-- </div> -->
-    <!-- <div> -->
-      <!-- <div class="inline hour">9am</div> -->
-      <!-- <div class="inline row"> -->
-        <!-- <textarea>Enter Event Description Here</textarea> -->
-      <!-- </div> -->
-      <!-- <div class="inline"><button class="saveBtn">Save</button></div> -->
-    <!-- </div> -->
-    <!-- <div> -->
-      <!-- <div class="inline hour">9am</div> -->
-      <!-- <div class="inline row"> -->
-        <!-- <textarea name="w3review" rows="4" cols="50">Enter Event Description Here</textarea><button class="saveBtn inline">Save</button> -->
-      <!-- </div> -->
-      <!-- <div class="inline"></div> -->
-    <!-- </div> -->
-
-
+  <!--   <div class="row">
+      <div class="inline hour">9AM</div>
+      <div class="inline">
+        <textarea class="future" name="w3review" cols="80">Enter Event Description Here</textarea>
+      </div>
+      <div class="inline"><button class="saveBtn">Save</button></div>
+    </div>
+    <div class="row">
+      <div class="inline hour">9AM</div>
+      <div class="inline">
+        <textarea class="future" name="w3review" cols="80">Enter Event Description Here</textarea>
+      </div>
+      <div class="inline"><button class="saveBtn">Save</button></div>
+    </div> -->
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0/build/global/luxon.min.js"></script>
+
+
     <script>
     let presentTime = moment().format('LLLL');
-    console.log(moment().format('LLLL'))
+    console.log(moment().format('LLLL'));
 
-    const createEvents = () => { 
+   const currentDay = document.getElementById('currentDay')
+    currentDay.innerHTML = presentTime;
+
+    const DateTime = luxon.DateTime;
+    const dt = DateTime.local();
     
-    const currentDay = document.getElementById('currentDay')
-    currentDay.innerHTML = presentTime; 
-    let divEnclosure = document.createElement('div');
+    console.log(DateTime.local());
+    console.log(DateTime.local().c.hour);
+    console.log(DateTime.DATE_HUGE);
+      console.log(dt.toLocaleString(DateTime.DATE_HUGE));
 
-    let divTime = document.createElement('div');
-    divTime.setAttribute('class', 'inline hour');
-    divTime.innerHTML = '9AM';
 
-    let divText = document.createElement('div');
-    divText.setAttribute('class', 'inline row');
-    divText.innerHTML = 'Enter Event Description Here';
 
-    let myTextArea = document.createElement('textarea');
-    myTextArea.setAttribute('attrName', 'value');
-    myTextArea.innerHTML = 'Enter Event Description Here';
+    const createEvents = (time, idx) => { 
 
-    let saveBtn = document.createElement('button');
-    saveBtn.setAttribute('class', 'saveBtn inline');
-    saveBtn.innerHTML = 'Save';
+     /* <div class="row">
+        <div class="inline hour">9AM</div>
+        <div class="inline">
+          <textarea class="future" name="w3review" rows="2" cols="80">Enter Event Description Here</textarea>
+        </div>
+        <div class="inline"><button class="saveBtn">Save</button></div>
+      </div> */
+      console.log('this is my index', idx);
+      let presentHour = DateTime.local().c.hour;
+      if (presentHour > 12) {
+        console.log('bigger than 12');
+        presentHour = presentHour - 12;
+      }
 
-    divText.appendChild(saveBtn);
-    divText.appendChild(myTextArea);
+        let divRow = document.createElement('div');
+        divRow.setAttribute('class', 'row');
 
-    currentDay.appendChild(divText);
-    currentDay.appendChild(divTime);
+        let divTime = document.createElement('div');
+        divTime.setAttribute('class', 'inline hour');
+        if (presentHour >= time ) {
+          divTime.innerText = `${time}PM`;
+        } else {
+          divTime.innerText = `${time}AM`
+        }
+        
 
-    const eventContainer = document.getElementById('eventContainer');
-    eventContainer.appendChild(currentDay);
+        let divTextAreaHolder = document.createElement('div');
+        divTextAreaHolder.setAttribute('class', 'inline');
 
+        let textArea = document.createElement('textarea');
+
+        let presentHourStr = presentHour.toString();
+
+        let newPresentHourStr = presentHourStr.concat('PM')
+        console.log(newPresentHourStr);
+
+        if (presentHour == time) {
+          console.log('present');
+          textArea.setAttribute('class', 'present');
+        } else if ((presentHour > time) && (presentHour < 5) ) {
+          console.log('present');
+          textArea.setAttribute('class', 'past');
+        } else {
+          textArea.setAttribute('class', 'future');
+          console.log('future');
+        }
+        textArea.setAttribute('cols', '80');
+        textArea.setAttribute('name', `events-${idx}`);
+        textArea.setAttribute('id', `events-${idx}`);
+
+
+        if (false) {
+          console.log('Value in localStorage');
+        } else {
+          textArea.innerText = 'Enter Event Description Here';
+        }
+
+        divTextAreaHolder.appendChild(textArea);
+
+        let divBtnHolder = document.createElement('div');
+        divBtnHolder.setAttribute('class', 'inline');
+
+        let saveBtn = document.createElement('button');
+        saveBtn.setAttribute('class', 'saveBtn');
+        saveBtn.setAttribute('data-eventId', `events-${idx}`);
+        saveBtn.addEventListener('click', btnListener);
+        
+        saveBtn.innerText = 'Save';
+
+        divBtnHolder.appendChild(saveBtn);
+
+      /* divRow.innerHTML = divTime; */
+      // console.log(divTime);
+      // console.log(divTextAreaHolder);
+      // console.log(divBtnHolder);
+        divRow.appendChild(divTime);
+        divRow.appendChild(divTextAreaHolder);
+        divRow.appendChild(divBtnHolder);
+
+        
+        const eventContainer = document.getElementById('eventContainer');
+        eventContainer.appendChild(divRow);
+        /* console.log(divRow); */
+
+        function btnListener(evt) {
+          console.log(evt.target.parentElement.parentElement);
+          let eventId = evt.target.getAttribute('data-eventId')
+          console.log(evt.target.getAttribute('data-eventId'))
+          let eventInfo =  document.getElementById(eventId).value;
+          console.log(eventInfo);
+        }
+    
     }
 
-    createEvents();
+    // createEvents('9AM');
+    // createEvents('10AM');
+    // createEvents('1PM');
 
-    const timeArray = ['9AM', '10AM'];
+    //const timeArray = ['9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM'];
 
+    const timeArray = [9, 10, 11, 12, 1, 2, 3, 4, 5];
+
+    timeArray.map((time, idx) => {
+        createEvents(time, idx);
+     })
 
 
 
