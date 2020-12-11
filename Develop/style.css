@@ -109,8 +109,8 @@ textarea {
 
 .saveBtn {
   position: relative;
-  top: 16px;
-  /* top: 0px; */
+  /* top: 16px; */
+  top: 0px;
   border-left: 1px solid black;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
