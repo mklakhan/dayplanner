@@ -26,16 +26,17 @@ WHEN I refresh the page
 THEN the saved events persist
 ```
 
+## Start using the planner today!
 
 ```
-Start using the planner today!
 https://mklakhan.github.io/dayplanner/
 ```
 
-*Notes
+```
+Notes:
 Worked with Tutor on Assignment
 Had to move files out of a folder which removed commit histories
-
+```
 
 
 
