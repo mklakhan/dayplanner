@@ -30,20 +30,6 @@
     </header>
    <div id="eventContainer" class="container">
       <!-- Timeblocks go here -->
-  <!--   <div class="row">
-      <div class="inline hour">9AM</div>
-      <div class="inline">
-        <textarea class="future" name="w3review" cols="80">Enter Event Description Here</textarea>
-      </div>
-      <div class="inline"><button class="saveBtn">Save</button></div>
-    </div>
-    <div class="row">
-      <div class="inline hour">9AM</div>
-      <div class="inline">
-        <textarea class="future" name="w3review" cols="80">Enter Event Description Here</textarea>
-      </div>
-      <div class="inline"><button class="saveBtn">Save</button></div>
-    </div> -->
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -54,132 +40,141 @@
 
 
     <script>
-    let presentTime = moment().format('LLLL');
-    console.log(moment().format('LLLL'));
+          let presentTime = moment().format('LLLL');
+          console.log(moment().format('LLLL'));
 
-   const currentDay = document.getElementById('currentDay')
-    currentDay.innerHTML = presentTime;
+          const currentDay = document.getElementById('currentDay');
+          currentDay.innerHTML = presentTime;
 
-    const DateTime = luxon.DateTime;
-    const dt = DateTime.local();
-    
-    console.log(DateTime.local());
-    console.log(DateTime.local().c.hour);
-    console.log(DateTime.DATE_HUGE);
-      console.log(dt.toLocaleString(DateTime.DATE_HUGE));
+          const DateTime = luxon.DateTime;
+          const dt = DateTime.local();
+          console.log(dt.c.hour);
 
+          const timeArray = [9, 10, 11, 12, 1, 2, 3, 4, 5];
 
-
-    const createEvents = (time, idx) => { 
-
-     /* <div class="row">
-        <div class="inline hour">9AM</div>
-        <div class="inline">
-          <textarea class="future" name="w3review" rows="2" cols="80">Enter Event Description Here</textarea>
-        </div>
-        <div class="inline"><button class="saveBtn">Save</button></div>
-      </div> */
-      console.log('this is my index', idx);
-      let presentHour = DateTime.local().c.hour;
-      if (presentHour > 12) {
-        console.log('bigger than 12');
-        presentHour = presentHour - 12;
-      }
-
-        let divRow = document.createElement('div');
-        divRow.setAttribute('class', 'row');
-
-        let divTime = document.createElement('div');
-        divTime.setAttribute('class', 'inline hour');
-        if (presentHour >= time ) {
-          divTime.innerText = `${time}PM`;
-        } else {
-          divTime.innerText = `${time}AM`
-        }
-        
-
-        let divTextAreaHolder = document.createElement('div');
-        divTextAreaHolder.setAttribute('class', 'inline');
-
-        let textArea = document.createElement('textarea');
-
-        let presentHourStr = presentHour.toString();
-
-        let newPresentHourStr = presentHourStr.concat('PM')
-        console.log(newPresentHourStr);
-
-        if (presentHour == time) {
-          console.log('present');
-          textArea.setAttribute('class', 'present');
-        } else if ((presentHour > time) && (presentHour < 5) ) {
-          console.log('present');
-          textArea.setAttribute('class', 'past');
-        } else {
-          textArea.setAttribute('class', 'future');
-          console.log('future');
-        }
-        textArea.setAttribute('cols', '80');
-        textArea.setAttribute('name', `events-${idx}`);
-        textArea.setAttribute('id', `events-${idx}`);
+          const createEvents = (time, idx) => {
 
 
-        if (false) {
-          console.log('Value in localStorage');
-        } else {
-          textArea.innerText = 'Enter Event Description Here';
-        }
+            console.log('this is my index', idx);
+            let presentHour = DateTime.local().c.hour;
+            let AMorPM;
 
-        divTextAreaHolder.appendChild(textArea);
+            if (presentHour > 12) {
+              AMorPM = 'PM'
+            } else { AMorPM = 'AM' }
 
-        let divBtnHolder = document.createElement('div');
-        divBtnHolder.setAttribute('class', 'inline');
+            if (presentHour > 12) {
+              console.log('bigger than 12');
+              presentHour = presentHour - 12;
+            }
 
-        let saveBtn = document.createElement('button');
-        saveBtn.setAttribute('class', 'saveBtn');
-        saveBtn.setAttribute('data-eventId', `events-${idx}`);
-        saveBtn.addEventListener('click', btnListener);
-        
-        saveBtn.innerText = 'Save';
+            let divRow = document.createElement('div');
+            divRow.setAttribute('class', 'row');
 
-        divBtnHolder.appendChild(saveBtn);
-
-      /* divRow.innerHTML = divTime; */
-      // console.log(divTime);
-      // console.log(divTextAreaHolder);
-      // console.log(divBtnHolder);
-        divRow.appendChild(divTime);
-        divRow.appendChild(divTextAreaHolder);
-        divRow.appendChild(divBtnHolder);
-
-        
-        const eventContainer = document.getElementById('eventContainer');
-        eventContainer.appendChild(divRow);
-        /* console.log(divRow); */
-
-        function btnListener(evt) {
-          console.log(evt.target.parentElement.parentElement);
-          let eventId = evt.target.getAttribute('data-eventId')
-          console.log(evt.target.getAttribute('data-eventId'))
-          let eventInfo =  document.getElementById(eventId).value;
-          console.log(eventInfo);
-        }
-    
-    }
-
-    // createEvents('9AM');
-    // createEvents('10AM');
-    // createEvents('1PM');
-
-    //const timeArray = ['9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM'];
-
-    const timeArray = [9, 10, 11, 12, 1, 2, 3, 4, 5];
-
-    timeArray.map((time, idx) => {
-        createEvents(time, idx);
-     })
+            let divTime = document.createElement('div');
+            divTime.setAttribute('class', 'inline hour');
+            if ((time == 12) || (time == 1) || (time == 2) || (time == 3) || (time == 4) || (time == 5)) {
+              divTime.innerText = `${time}PM`;
+            } else {
+              divTime.innerText = `${time}AM`
+            }
 
 
+            let divTextAreaHolder = document.createElement('div');
+            divTextAreaHolder.setAttribute('class', 'inline');
 
+            let textArea = document.createElement('textarea');
+
+            let presentHourStr = presentHour.toString();
+
+            let newPresentHourStr = presentHourStr.concat('PM')
+            console.log(newPresentHourStr);
+
+            // presentHour
+            if (AMorPM == 'AM') {
+              if (presentHour == time) {
+                console.log('present');
+                textArea.setAttribute('class', 'present');
+              } else if ((time == 1) || (time == 2) || (time == 3) || (time == 4) || (time == 5) || (time == 12 || (time > presentHour))) {
+                textArea.setAttribute('class', 'future');
+                console.log('future');
+              } else if ((presentHour > time)) {
+                console.log('Past');
+                textArea.setAttribute('class', 'past');
+              }
+            } else if (AMorPM == 'PM') {
+                if (presentHour == time) {
+                  console.log('present');
+                  textArea.setAttribute('class', 'present');
+                } else if ((time == 9) || (time == 10) || (time == 11) || (time == 12) || (time < presentHour)) {
+                  console.log('past');
+                  textArea.setAttribute('class', 'past');
+                } else {
+                  textArea.setAttribute('class', 'future');
+                  console.log('future');
+                }
+              }
+
+            textArea.setAttribute('cols', '80');
+            textArea.setAttribute('name', `events-${idx}`);
+            textArea.setAttribute('id', `events-${idx}`);
+
+            if (false) {
+              console.log('Value in localStorage');
+            } else {
+              textArea.innerText = '';
+            }
+
+            divTextAreaHolder.appendChild(textArea);
+
+            let divBtnHolder = document.createElement('div');
+            divBtnHolder.setAttribute('class', 'inline');
+
+            let saveBtn = document.createElement('button');
+            saveBtn.setAttribute('class', 'saveBtn');
+            saveBtn.setAttribute('data-eventId', `events-${idx}`);
+            saveBtn.addEventListener('click', btnListener);
+
+            saveBtn.innerText = 'Save';
+
+            divBtnHolder.appendChild(saveBtn);
+
+            divRow.appendChild(divTime);
+            divRow.appendChild(divTextAreaHolder);
+            divRow.appendChild(divBtnHolder);
+
+            const eventContainer = document.getElementById('eventContainer');
+            eventContainer.appendChild(divRow);
+
+            function btnListener(evt) {
+              console.log(evt.target.parentElement.parentElement);
+              let eventId = evt.target.getAttribute('data-eventId')
+              console.log(evt.target.getAttribute('data-eventId'))
+              let eventInfo = document.getElementById(eventId).value;
+              let eventName = document.getElementById(eventId).getAttribute('name');
+              localStorage.setItem(eventName, eventInfo);
+              console.log(eventName);
+              console.log(eventInfo);
+            }
+          }  // NOTE END OF createEvents()
+
+          function setEvents() {
+            for (let idx = 0; idx < timeArray.length; ++idx) {
+              let eventToDo = `events-${idx}`;
+              console.log(eventToDo);
+              if (localStorage.getItem(eventToDo) !== null) {
+                console.log(localStorage.getItem(eventToDo));
+                console.log(document.getElementById(eventToDo));
+                document.getElementById(eventToDo).value = localStorage.getItem(eventToDo)
+              }
+            }
+          }
+
+          timeArray.map((time, idx) => {
+            createEvents(time, idx);
+          });
+
+          setEvents();
     </script>
 
 
